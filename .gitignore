@@ -1,0 +1,4 @@
+/cmake-build-debug/
+/cmake-build-release/
+/sogang/HW1/Data/Output/*
+.idea

@@ -13,14 +13,15 @@
 #include<stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <string.h>
 
-#include <CL/cl.h>
+#include <OpenCL/cl.h>
+#include <chrono>
 
 /******************************************************************************************************/
-#include <Windows.h>
 // __int64 _start, _freq, _end;
-#define CHECK_TIME_START(start,freq) QueryPerformanceFrequency((LARGE_INTEGER*)&freq); QueryPerformanceCounter((LARGE_INTEGER*)&start)
-#define CHECK_TIME_END(start,end,freq,time) QueryPerformanceCounter((LARGE_INTEGER*)&end); time = (float)((float)(end - start) / (freq * 1.0e-3f))
+#define CHECK_TIME_START(start,freq) start = std::chrono::high_resolution_clock::now();
+#define CHECK_TIME_END(start,end,freq,time) end = std::chrono::high_resolution_clock::now(); time = (float)std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
 /******************************************************************************************************/
 
 #define CHECK_ERROR_CODE(a) check_error_code(a, __LINE__-1, __FILE__)

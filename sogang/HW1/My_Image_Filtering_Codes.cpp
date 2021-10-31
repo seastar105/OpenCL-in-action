@@ -37,8 +37,8 @@ void sobel_SoA_CPU(void) {
 				if (!valid(y + j - 1, x + k - 1)) continue;
 				// Assume image_input has greyscale image, R=G=B
                 int idx = (y + j - 1) * W + x + k - 1;
-				sum_x += context.SoA_image_input.R_plane[idx] * sobel_x[j][k];
-				sum_y += context.SoA_image_input.R_plane[idx] * sobel_y[j][k];
+				sum_x += context.SoA_image_output.R_plane[idx] * sobel_x[j][k];
+				sum_y += context.SoA_image_output.R_plane[idx] * sobel_y[j][k];
 			}
 		}
         context.grad[i] = sum_x * sum_x + sum_y * sum_y;
@@ -89,8 +89,8 @@ void sobel_AoS_CPU(void) {
                 if (!valid(y + j - 1, x + k - 1)) continue;
                 // Assume image_input has greyscale image, R=G=B
                 int idx = (y + j - 1) * W + x + k - 1;
-                sum_x += context.AoS_image_input[idx].R * sobel_x[j][k];
-                sum_y += context.AoS_image_input[idx].R * sobel_y[j][k];
+                sum_x += context.AoS_image_output[idx].R * sobel_x[j][k];
+                sum_y += context.AoS_image_output[idx].R * sobel_y[j][k];
             }
         }
         context.grad[i] = sum_x * sum_x + sum_y * sum_y;
@@ -106,17 +106,4 @@ void sobel_AoS_CPU(void) {
         context.AoS_image_output[i].B = intensity;
         context.AoS_image_output[i].A = context.AoS_image_input[i].A;
     }
-}
-
-void convert_to_greyscale_image_SoA_GPU(void) {
-    cl_platform_id platform;
-    cl_device_id device;
-    cl_context open_context;
-    cl_command_queue queue;
-    cl_int i, err;
-    cl_program program;
-    FILE* program_file;
-    char* program_buffer, * program_log;
-    cl_kernel kernel;
-    cl_mem
 }

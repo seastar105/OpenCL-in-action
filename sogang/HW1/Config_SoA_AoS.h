@@ -26,12 +26,13 @@
 #define INPUT_FILE_8			"Grass_texture_2048_2048"
 #define INPUT_FILE_9			"Tiger_texture_512_512"
 #define INPUT_FILE_10		"Plain_color_128_192_64_1024_1024"
-#define DEBUG_FILE	"mnist"
+#define DEBUG_FILE	"cifar10"
+#define HIGH_RES_FILE    "high_res"
 /////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////
-#define		INPUT_IMAGE					1
-#define		IMAGE_OPERATION			SoA_SO_CPU
+#define		INPUT_IMAGE					3
+#define		IMAGE_OPERATION			AoS_SO_GPU
 /////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -53,16 +54,33 @@
 #define	INPUT_FILE 			INPUT_FILE_9
 #elif INPUT_IMAGE == 10
 #define	INPUT_FILE 			INPUT_FILE_10
-#else
+#elif INPUT_IMAGE == 11
 #define INPUT_FILE			DEBUG_FILE
+#else
+#define INPUT_FILE          HIGH_RES_FILE
 #endif
 
 #define	INPUT_FILE_NAME			"Data/Input/" INPUT_FILE ".jpg"
 #define	OUTPUT_FILE_NAME		"Data/Output/" INPUT_FILE "_out.png"
 
+#define N_EXECUTIONS_GPU        100
+#define N_EXECUTIONS_CPU        10
 // Work Group Configuration
 #define WG_WIDTH	32
 #define WG_HEIGHT	8
 #define WG_SIZE		WG_WIDTH * WG_HEIGHT
 
+// Kernel Config
+#define KERNEL_NAME     "dummy"
+#if IMAGE_OPERATION == SoA_GS_GPU
+#define KERNEL_NAME   "SoA_GS_GPU"
+#elif IMAGE_OPERATION == AoS_GS_GPU
+#define KERNEL_NAME   "AoS_GS_GPU"
+#elif IMAGE_OPERATION == SoA_SO_GPU
+#define KERNEL_NAME   "SoA_SO_GPU"
+#elif IMAGE_OPERATION == AoS_SO_GPU
+#define KERNEL_NAME   "AoS_SO_GPU"
+#endif
+
+#define CL_FILE_NAME            "Kernel/" KERNEL_NAME ".cl"
 /////////////////////////////////////////////////////////////////////////////////////

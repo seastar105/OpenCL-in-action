@@ -12,7 +12,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <windows.h>
 
 #include <FreeImage/FreeImage.h>
 
@@ -45,8 +44,24 @@ typedef struct _Context {
     int* grad;  // grad[i] = s_x^2 + s_y^2
 } Context;
 
-extern Context context;
+typedef struct _ocl_context {
+    // opencl variable
+    cl_platform_id platform;
+    cl_device_id device;
+    cl_context context;
+    cl_command_queue queue;
+    cl_int err;
+    cl_program program;
+    cl_kernel kernel;
+    cl_kernel grad_kernel, norm_kernel;
+    cl_mem input_image, output_image, grad, sobel_x, sobel_y, min_max;
+    cl_event event_for_timing;
+    size_t global_work_offset[3], global_work_size[3], local_work_size[3];
+    cl_uint work_dim;
+} ocl_config;
 
+extern Context context;
+extern ocl_config ocl_stuff;
 const int sobel_x[3][3] = {
     {-1, 0, 1},
     {-2, 0, 2},
@@ -75,5 +90,6 @@ void convert_to_greyscale_image_AoS_CPU(void);
 
 void sobel_SoA_CPU(void);
 void sobel_AoS_CPU(void);
-void convert_to_greyscale_image_SoA_GPU(void);
+void create_context(void);
+void create_program(const char *);
 #endif // __CONTEXT_SOA_AOS__

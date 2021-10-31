@@ -161,7 +161,7 @@ void convert_AoS_output_to_output_image_data(void) {
 void prepare_sobel(void) {
     context.grad = (int*)malloc(sizeof(int) * context.image_width * context.image_height);
     if (!context.grad) {
-        fprintf(stderr, "*** Error: cannot allocate memory for SoA_image_input...\n");
+        fprintf(stderr, "*** Error: cannot allocate memory for sobel grad...\n");
         exit(EXIT_FAILURE);
     }
 }
